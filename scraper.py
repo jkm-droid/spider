@@ -1,14 +1,11 @@
-import bs4 as bs4
-import requests
-from requests import get
-from bs4 import BeautifulSoup
 import pandas as pd
-import numpy as np
+import requests
+from bs4 import BeautifulSoup
+from databaseconnector import dbconnect
 
 headers = {"Accept-Language": "en-US, en;q=0.5"}
 
-url = "https://www.imdb.com/search/title/?title_type=feature&num_votes=25000,&genres=drama&sort=user_rating," \
-      "desc&start=51&ref_=adv_nxt "
+url = "https://www.imdb.com/search/title/?title_type=feature&num_votes=25000,&genres=biography&sort=user_rating,desc&view=advanced"
 
 get_content = requests.get(url, headers=headers)
 soup = BeautifulSoup(get_content.text, "html.parser")
@@ -17,7 +14,7 @@ soup = BeautifulSoup(get_content.text, "html.parser")
 initialize the variables for storing specific data from the
 web-page
 """
-titles = []
+title = []
 years = []
 rating = []
 metascore = []
@@ -40,7 +37,7 @@ such as the title, duration, votes, genre etc..
 for movie_div in movie_divs:
     # get the movie title
     movie_name = movie_div.h3.a.text
-    titles.append(movie_name)
+    title.append(movie_name)
 
     # get the release year
     movie_year = movie_div.h3.find('span', class_='lister-item-year')
@@ -86,7 +83,7 @@ for movie_div in movie_divs:
 putting the data into a panda dataframe
 """
 movies = pd.DataFrame({
-    'movie': titles,
+    'title': title,
     'year': years,
     'duration': duration,
     'rating': rating,
@@ -96,6 +93,7 @@ movies = pd.DataFrame({
     'gross': gross,
     'directorstars': director_stars,
 })
+
 """
 cleaning the data;removing quotes
 converting the data to the correct data types
@@ -112,14 +110,23 @@ movies['genre'] = movies['genre'].str.replace('\n', '')
 # movies['genre'] = movies['genre'].str.replace(',', '')
 
 """
+saving the movies to database
+"""
+connection = dbconnect()
+movies.to_sql(con=connection, name='movies', if_exists='append')
+print('data saved successfully to database')
+
+
+"""
 saving the data to specific files
 """
-json_file = movies.to_json()
-print('Saving...')
-with open('json.txt', 'a+') as file:
-    file.write(json_file)
-print('saved!')
 
-print('saving csv')
-movies.to_csv('movies1.csv')
-print('saved!')
+# print('saving csv')
+# movies.to_csv('movies2.csv')
+# print('saved!')
+
+# json_file = movies.to_json()
+# print('Saving...')
+# with open('json.txt', 'a+') as file:
+# file.write(json_file)
+# print('saved!')
