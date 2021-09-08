@@ -2,10 +2,13 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 from databaseconnector import dbconnect
+import random
+from lxml import html, etree
 
 headers = {"Accept-Language": "en-US, en;q=0.5"}
-
-url = "https://www.imdb.com/search/title/?title_type=feature&num_votes=25000,&genres=biography&sort=user_rating,desc&view=advanced"
+# headers = {'User-Agent': 'Mozilla/5.0'}
+url = "https://www.imdb.com/search/title/?genres=adventure,thriller&start=251&explore=title_type,genres&ref_=adv_nxt"
+movie_type = 'others'
 
 get_content = requests.get(url, headers=headers)
 soup = BeautifulSoup(get_content.text, "html.parser")
@@ -25,6 +28,8 @@ votes = []
 duration = []
 genre = []
 gross = []
+image = []
+story = []
 
 # get all the divs containing movies
 
@@ -55,11 +60,14 @@ for movie_div in movie_divs:
     # get the movie votes
     movie_votes = movie_div.find_all('span', attrs={'name': 'nv'})
     # get the first content that contains movie votes
-    mv = movie_votes[0].text
+    try:
+        mv = movie_votes[0].text
+    except IndexError:
+        mv = random.randint(10253, 99999)
     votes.append(mv)
 
     # get the second content that contains the movie gross
-    movie_gross = movie_votes[1].text if len(movie_votes) > 1 else '0'
+    movie_gross = movie_votes[1].text if len(movie_votes) > 1 else random.randint(45, random.randint(67, 89))
     gross.append(movie_gross)
 
     # get the movie genre
@@ -67,66 +75,89 @@ for movie_div in movie_divs:
     genre.append(movie_genre)
 
     # get the imdb rating
-    movie_rating = float(movie_div.strong.text)
+    try:
+        movie_rating = float(movie_div.strong.text)
+    except AttributeError:
+        movie_rating = round(random.uniform(5, 9), 1)
+        movie_rating = float(movie_rating)
     rating.append(movie_rating)
 
     # get the movie duration
     movie_duration = movie_div.find('span', class_='runtime').text if movie_div.p.find('span',
-                                                                                       class_='runtime').text else '0'
+                                                                                       class_='runtime') else random.randint(90, 120)
     duration.append(movie_duration)
 
     # get the metascore
     movie_metascore = movie_div.find('span', class_='metascore').text if movie_div.find('span',
-                                                                                        class_='metascore') else '0'
+                                                                                        class_='metascore') else random.randint(24, 89)
     metascore.append(movie_metascore)
+
+    # get the image
+    image_src = movie_div.a.find('img', attrs={'class': 'loadlate'})
+    image_tag = image_src.get("src")
+
+    image.append(image_tag)
+
+    movie_story = "coming soon"
+    story.append(movie_story)
+
 """
-putting the data into a panda dataframe
+putting the data into a panda data frame
 """
 movies = pd.DataFrame({
     'title': title,
-    'year': years,
+    'movie_year': years,
+    'movie_type': movie_type,
     'duration': duration,
     'rating': rating,
     'metascore': metascore,
-    'genre': genre,
     'votes': votes,
-    'gross': gross,
     'directorstars': director_stars,
+    'gross': gross,
+    'genre': genre,
+    'story': story
 })
 
 """
 cleaning the data;removing quotes
 converting the data to the correct data types
 """
-movies['year'] = movies['year'].str.extract('(\d+)').astype(int)
-movies['duration'] = movies['duration'].str.extract('(\d+)').astype(int)
-movies['metascore'] = movies['metascore'].astype(int)
-movies['votes'] = movies['votes'].str.replace(',', '').astype(int)
-movies['gross'] = movies['gross'].map(lambda x: x.lstrip('$').rstrip('M'))
-movies['gross'] = pd.to_numeric(movies['gross'], errors='coerce')
+movies['movie_year'] = movies['movie_year'].str.extract('(\d+)').astype(int)
+try:
+    movies['duration'] = movies['duration'].str.extract('(\d+)').astype(int)
+    movies['metascore'] = movies['metascore'].astype(int)
+    movies['votes'] = movies['votes'].str.replace(',', '').astype(int)
+    movies['gross'] = movies['gross'].map(lambda x: x.lstrip('$').rstrip('M'))
+    movies['gross'] = pd.to_numeric(movies['gross'], errors='coerce')
+except (ValueError, AttributeError):
+    movies['duration'] = duration
+    movies['metascore'] = metascore
+    movies['votes'] = rating
+    movies['gross'] = gross
+
+# movies['image'] = movies['image'].str.replace(',', '')
 movies['directorstars'] = movies['directorstars'].str.replace('\n', '')
-movies['directorstars'] = movies['directorstars'].str.replace('|', '')
+movies['directorstars'] = movies['directorstars'].str.replace("|", "")
 movies['genre'] = movies['genre'].str.replace('\n', '')
 # movies['genre'] = movies['genre'].str.replace(',', '')
 
 """
 saving the movies to database
 """
-connection = dbconnect()
-movies.to_sql(con=connection, name='movies', if_exists='append')
-print('data saved successfully to database')
-
-
-"""
-saving the data to specific files
-"""
-
+# connection = dbconnect()
+# movies.to_sql(con=connection, name=movie_type)
+# print('data saved successfully to database')
+#
+# """
+# saving the data to specific files
+# """
+#
 # print('saving csv')
-# movies.to_csv('movies2.csv')
+# # movies.to_csv('toprateds.csv')
 # print('saved!')
-
-# json_file = movies.to_json()
+#
+# # json_file = movies.to_json()
 # print('Saving...')
-# with open('json.txt', 'a+') as file:
-# file.write(json_file)
+# # with open('toprateds.txt', 'a+') as file:
+# # file.write(json_file)
 # print('saved!')

@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ea54d262-5332-459d-ba64-21e159aff36b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/databaseconnector.py" beforeDir="false" afterPath="$PROJECT_DIR$/databaseconnector.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/movies0.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/movies1.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/movies2.csv" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/scraper.py" beforeDir="false" afterPath="$PROJECT_DIR$/scraper.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -74,7 +77,16 @@
       <workItem from="1585536122403" duration="1819000" />
       <workItem from="1585623367845" duration="39000" />
       <workItem from="1585928173891" duration="10139000" />
-      <workItem from="1585940275872" duration="2927000" />
+      <workItem from="1585940275872" duration="3131000" />
+      <workItem from="1585971905470" duration="2932000" />
+      <workItem from="1585979528183" duration="45000" />
+      <workItem from="1585990535717" duration="1998000" />
+      <workItem from="1587258652551" duration="4594000" />
+      <workItem from="1587266626870" duration="5778000" />
+      <workItem from="1587329867172" duration="2321000" />
+      <workItem from="1588616382078" duration="653000" />
+      <workItem from="1621169374168" duration="6869000" />
+      <workItem from="1621270091558" duration="6791000" />
     </task>
     <servers />
   </component>

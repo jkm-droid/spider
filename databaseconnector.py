@@ -10,7 +10,7 @@ function to establish connection to the database
 def dbconnect():
     # mysql connect database connection credentials
     DBHOST = 'localhost'
-    DBNAME = 'spider'
+    DBNAME = 'infinity_movies'
     DBUSER = 'root'
     DBPASS = ''
 
@@ -19,7 +19,7 @@ def dbconnect():
     try:
         # dialect + driver: // username: password @ host:port / database
         # connecting using sqlalchemy
-        connection = create_engine("mysql+mysqldb://root@localhost/spider")
+        connection = create_engine("mysql+mysqldb://root@localhost/infinity_movies")
         if connection:
             print("Connection established successfully")
 
