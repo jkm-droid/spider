@@ -7,7 +7,10 @@ from lxml import html, etree
 
 headers = {"Accept-Language": "en-US, en;q=0.5"}
 # headers = {'User-Agent': 'Mozilla/5.0'}
+# paste your url from idmb here
 url = "https://www.imdb.com/search/title/?genres=adventure,thriller&start=251&explore=title_type,genres&ref_=adv_nxt"
+
+# replace movie_type with the movie genre you are srapping
 movie_type = 'others'
 
 get_content = requests.get(url, headers=headers)
@@ -63,6 +66,7 @@ for movie_div in movie_divs:
     try:
         mv = movie_votes[0].text
     except IndexError:
+        # if there is an exception, generate a random value
         mv = random.randint(10253, 99999)
     votes.append(mv)
 
@@ -84,12 +88,14 @@ for movie_div in movie_divs:
 
     # get the movie duration
     movie_duration = movie_div.find('span', class_='runtime').text if movie_div.p.find('span',
-                                                                                       class_='runtime') else random.randint(90, 120)
+                                                                                       class_='runtime') else random.randint(
+        90, 120)
     duration.append(movie_duration)
 
     # get the metascore
     movie_metascore = movie_div.find('span', class_='metascore').text if movie_div.find('span',
-                                                                                        class_='metascore') else random.randint(24, 89)
+                                                                                        class_='metascore') else random.randint(
+        24, 89)
     metascore.append(movie_metascore)
 
     # get the image
@@ -144,20 +150,23 @@ movies['genre'] = movies['genre'].str.replace('\n', '')
 """
 saving the movies to database
 """
-# connection = dbconnect()
-# movies.to_sql(con=connection, name=movie_type)
-# print('data saved successfully to database')
-#
-# """
-# saving the data to specific files
-# """
-#
-# print('saving csv')
-# # movies.to_csv('toprateds.csv')
-# print('saved!')
-#
-# # json_file = movies.to_json()
-# print('Saving...')
-# # with open('toprateds.txt', 'a+') as file:
-# # file.write(json_file)
-# print('saved!')
+connection = dbconnect()
+movies.to_sql(con=connection, name=movie_type)
+print('data saved successfully to database')
+
+"""
+saving the data to specific files
+remember to change the file name to you liking
+"""
+
+print('saving data...')
+# save the data to a csv file
+movies.to_csv('toprateds.csv')
+
+# save the data to json(JSON FORMAT) file
+json_file = movies.to_json()
+
+# save the data to TXT file
+with open('toprateds.txt', 'a+') as file:
+    file.write(json_file)
+print('saved!')
