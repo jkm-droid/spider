@@ -10,7 +10,7 @@ headers = {"Accept-Language": "en-US, en;q=0.5"}
 # paste your url from idmb here
 url = "https://www.imdb.com/search/title/?genres=adventure,thriller&start=251&explore=title_type,genres&ref_=adv_nxt"
 
-# replace movie_type with the movie genre you are srapping
+# replace movie_type with the movie genre you are scrapping
 movie_type = 'others'
 
 get_content = requests.get(url, headers=headers)
@@ -92,7 +92,7 @@ for movie_div in movie_divs:
         90, 120)
     duration.append(movie_duration)
 
-    # get the metascore
+    # get the meta score
     movie_metascore = movie_div.find('span', class_='metascore').text if movie_div.find('span',
                                                                                         class_='metascore') else random.randint(
         24, 89)
@@ -104,7 +104,7 @@ for movie_div in movie_divs:
 
     image.append(image_tag)
 
-    movie_story = "coming soon"
+    movie_story = movie_div.find_all('p', class_='text-muted')[1].text
     story.append(movie_story)
 
 """
@@ -121,7 +121,8 @@ movies = pd.DataFrame({
     'directorstars': director_stars,
     'gross': gross,
     'genre': genre,
-    'story': story
+    'story': story,
+    'image': image
 })
 
 """
@@ -141,11 +142,12 @@ except (ValueError, AttributeError):
     movies['votes'] = rating
     movies['gross'] = gross
 
-# movies['image'] = movies['image'].str.replace(',', '')
+movies['image'] = movies['image'].str.replace(',', '')
 movies['directorstars'] = movies['directorstars'].str.replace('\n', '')
 movies['directorstars'] = movies['directorstars'].str.replace("|", "")
 movies['genre'] = movies['genre'].str.replace('\n', '')
 # movies['genre'] = movies['genre'].str.replace(',', '')
+movies['story'] = movies['story'].str.replace('\n', '')
 
 """
 saving the movies to database
@@ -165,6 +167,8 @@ movies.to_csv('toprateds.csv')
 
 # save the data to json(JSON FORMAT) file
 json_file = movies.to_json()
+with open('toprateds.json', 'a+') as file:
+    file.write(json_file)
 
 # save the data to TXT file
 with open('toprateds.txt', 'a+') as file:
