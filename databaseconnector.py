@@ -1,5 +1,5 @@
-import mysql.connector
-from mysql.connector import Error
+# import mysqlconnector
+# from mysql.connector import Error
 from sqlalchemy import create_engine
 
 """
@@ -11,15 +11,15 @@ def dbconnect():
     # mysql connect database connection credentials
     DBHOST = 'localhost'
     DBNAME = 'infinity_movies'
-    DBUSER = 'root'
-    DBPASS = ''
+    DBUSER = 'jkmdroid'
+    DBPASS = 'jkm'
 
     # try establishing connection to the database
     # throw errors if connection fails
     try:
         # dialect + driver: // username: password @ host:port / database
         # connecting using sqlalchemy
-        connection = create_engine("mysql+mysqldb://root@localhost/infinity_movies")
+        connection = create_engine("mysql+mysqldb://jkmdroid:jkm@localhost/infinity_movies")
         if connection:
             print("Connection established successfully")
 

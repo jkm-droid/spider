@@ -2,12 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ea54d262-5332-459d-ba64-21e159aff36b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/toprateds.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/toprateds.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/toprateds.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scraper.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/databaseconnector.py" beforeDir="false" afterPath="$PROJECT_DIR$/databaseconnector.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/toprateds.csv" beforeDir="false" afterPath="$PROJECT_DIR$/toprateds.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/toprateds.json" beforeDir="false" afterPath="$PROJECT_DIR$/toprateds.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/toprateds.txt" beforeDir="false" afterPath="$PROJECT_DIR$/toprateds.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,6 +86,8 @@
       <workItem from="1621169374168" duration="6869000" />
       <workItem from="1621270091558" duration="6791000" />
       <workItem from="1631130768094" duration="2667000" />
+      <workItem from="1631133444933" duration="59000" />
+      <workItem from="1631159383904" duration="1094000" />
     </task>
     <servers />
   </component>
